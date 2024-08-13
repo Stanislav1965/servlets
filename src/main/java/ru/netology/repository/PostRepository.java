@@ -4,14 +4,14 @@ import ru.netology.exception.NotFoundException;
 import ru.netology.model.Post;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PostRepository {
     private final AtomicInteger postId = new AtomicInteger(0);
-    private final Hashtable<Long, Post> postTable = new Hashtable<>();
+    private final ConcurrentHashMap<Long, Post> postTable = new ConcurrentHashMap<>();
 
 
     public List<Post> all() {

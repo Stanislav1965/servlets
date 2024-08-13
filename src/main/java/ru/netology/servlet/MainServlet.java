@@ -9,6 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
+
+    private static final String METHOD_GET = "GET";
+    private static final String METHOD_POST = "POST";
+    private static final String METHOD_DELETE = "DELETE";
+    private static final String PATH_POSTS = "/api/posts";
+    private static final String PATH_SEARCH = "/api/posts/\\d+";
+    private static final String PATH_DELIMIT = "/";
+
     private PostController controller;
 
     @Override
@@ -25,23 +33,23 @@ public class MainServlet extends HttpServlet {
             final var path = req.getRequestURI();
             final var method = req.getMethod();
             // primitive routing
-            if (method.equals("GET") && path.equals("/api/posts")) {
+            if (method.equals(METHOD_GET) && path.equals(PATH_POSTS)) {
                 controller.all(resp);
                 return;
             }
-            if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(METHOD_GET) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf("/")+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
                 controller.getById(id, resp);
                 return;
             }
-            if (method.equals("POST") && path.equals("/api/posts")) {
+            if (method.equals(METHOD_POST) && path.equals(PATH_POSTS)) {
                 controller.save(req.getReader(), resp);
                 return;
             }
-            if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(METHOD_DELETE) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf("/")+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
                 controller.removeById(id, resp);
                 return;
             }
