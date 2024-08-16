@@ -1,5 +1,7 @@
 package ru.netology.servlet;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.netology.config.JavaConfig;
 import ru.netology.controller.PostController;
 import ru.netology.repository.PostRepository;
 import ru.netology.service.PostService;
@@ -21,8 +23,11 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        final var repository = new PostRepository();
-        final var service = new PostService(repository);
+        // отдаём список пакетов, в которых нужно искать аннотированные классы
+        final var context = new AnnotationConfigApplicationContext(JavaConfig.class);
+
+        final var repository = context.getBean(PostRepository.class);
+        final var service = context.getBean(PostService.class);
         controller = new PostController(service);
     }
 
@@ -39,7 +44,7 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals(METHOD_GET) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT) + 1));
                 controller.getById(id, resp);
                 return;
             }
@@ -49,7 +54,7 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals(METHOD_DELETE) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT) + 1));
                 controller.removeById(id, resp);
                 return;
             }
