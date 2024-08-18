@@ -2,8 +2,6 @@ package ru.netology.servlet;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.netology.controller.PostController;
-import ru.netology.repository.PostRepositoryStubImpl;
-import ru.netology.service.PostService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +21,6 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init() {
         final var context = new AnnotationConfigApplicationContext("ru.netology");
-        final var service = context.getBean("postService");
-        final var repository = context.getBean("postRepositoryStubImpl");
         final var controller = context.getBean("postController");
 
         setPostController((PostController) controller);
@@ -63,6 +59,7 @@ public class MainServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
     public void setPostController(PostController controller) {
         this.controller = controller;
     }
