@@ -28,7 +28,9 @@ public class MainServlet extends HttpServlet {
 
         final var repository = context.getBean(PostRepository.class);
         final var service = context.getBean(PostService.class);
-        controller = new PostController(service);
+        final var controller = context.getBean(PostController.class);
+
+        setPostController((PostController) controller);
     }
 
     @Override
@@ -63,5 +65,9 @@ public class MainServlet extends HttpServlet {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public void setPostController(PostController controller) {
+        this.controller = controller;
     }
 }
