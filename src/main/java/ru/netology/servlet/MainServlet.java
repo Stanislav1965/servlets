@@ -1,7 +1,7 @@
 package ru.netology.servlet;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.netology.controller.PostController;
-import ru.netology.repository.PostRepository;
 import ru.netology.service.PostService;
 
 import javax.servlet.http.HttpServlet;
@@ -21,9 +21,10 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        final var repository = new PostRepository();
-        final var service = new PostService(repository);
-        controller = new PostController(service);
+        final var context = new AnnotationConfigApplicationContext("ru.netology");
+        final var service = context.getBean("postService");
+        final var repository = context.getBean("postRepository");
+        controller = new PostController((PostService) service);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals(METHOD_GET) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT) + 1));
                 controller.getById(id, resp);
                 return;
             }
@@ -49,7 +50,7 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals(METHOD_DELETE) && path.matches(PATH_SEARCH)) {
                 // easy way
-                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT)+1));
+                final var id = Long.parseLong(path.substring(path.lastIndexOf(PATH_DELIMIT) + 1));
                 controller.removeById(id, resp);
                 return;
             }
