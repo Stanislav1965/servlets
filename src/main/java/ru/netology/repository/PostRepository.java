@@ -14,3 +14,4 @@ public interface PostRepository {
 
     void removeById(long id);
 }
+
