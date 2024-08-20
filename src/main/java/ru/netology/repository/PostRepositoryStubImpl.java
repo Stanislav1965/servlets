@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class PostRepositoryStubImpl implements PostRepository {
-
+public class PostRepositoryStubImpl  implements  PostRepository {
     private final AtomicInteger postId = new AtomicInteger(0);
     private final ConcurrentHashMap<Long, Post> postTable = new ConcurrentHashMap<>();
 

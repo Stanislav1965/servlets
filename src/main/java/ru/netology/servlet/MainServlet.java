@@ -21,11 +21,10 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        // отдаём список пакетов, в которых нужно искать аннотированные классы
-        final var context = new AnnotationConfigApplicationContext(JavaConfig.class);
-        final var controller = context.getBean(PostController.class);
+        final var context = new AnnotationConfigApplicationContext("ru.netology");
+        final var controller = context.getBean("postController");
 
-        setPostController(controller);
+        setPostController((PostController) controller);
     }
 
     @Override
